@@ -1,0 +1,10 @@
+Notices
+• User-Provided Audio: This game lets you load your own audio files (e.g., MP3).
+  You are responsible for ensuring you have the rights to use any audio you load.
+  The developer does not provide or distribute music and makes no warranty about user-provided audio.
+
+• No Affiliation: This project is not affiliated with or endorsed by any company or product.
+  All trademarks are the property of their respective owners.
+
+• Disclaimer: This software is provided “AS IS”, without warranty of any kind.
+  The developer is not liable for any damages arising from its use.

@@ -1,0 +1,4 @@
+Credits
+Game Design / Programming: Luarie Takamiya
+UI / Visual Direction: Luarie Takamiya
+Version: 1.0.4

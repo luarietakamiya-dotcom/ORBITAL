@@ -1,0 +1,4 @@
+Privacy
+• This game processes audio locally in your browser.
+• No audio files are uploaded to any server.
+• Settings/scores (if any) are stored locally on your device.
