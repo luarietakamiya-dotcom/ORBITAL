@@ -1,0 +1,207 @@
+{
+    "title": "Tutorial",
+    "artist": "ORBITAL Demo",
+    "bpm": 120,
+    "offset": 0,
+    "chorusSections": [
+        {
+            "startMs": 17000,
+            "endMs": 21000
+        }
+    ],
+    "notes": [
+        {
+            "timeMs": 2000,
+            "lane": "UL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 2500,
+            "lane": "UR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 3000,
+            "lane": "DL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 3500,
+            "lane": "DR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 4500,
+            "lane": "UL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 5000,
+            "lane": "DR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 5500,
+            "lane": "UR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 6000,
+            "lane": "DL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 7000,
+            "lane": "UL",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 7000,
+            "lane": "DR",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 8000,
+            "lane": "UR",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 8000,
+            "lane": "DL",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 9000,
+            "lane": "UL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 9250,
+            "lane": "UR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 9500,
+            "lane": "DR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 9750,
+            "lane": "DL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 10500,
+            "lane": "UL",
+            "type": "COMET",
+            "durationMs": 1000
+        },
+        {
+            "timeMs": 12000,
+            "lane": "DR",
+            "type": "COMET",
+            "durationMs": 1000
+        },
+        {
+            "timeMs": 14000,
+            "lane": "UR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 14500,
+            "lane": "DL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 15000,
+            "lane": "UL",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 15000,
+            "lane": "DR",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 16000,
+            "lane": "UR",
+            "type": "COMET",
+            "durationMs": 800
+        },
+        {
+            "timeMs": 16400,
+            "lane": "DL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 17500,
+            "lane": "UL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 17750,
+            "lane": "UR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 18000,
+            "lane": "DL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 18250,
+            "lane": "DR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 19000,
+            "lane": "UL",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 19000,
+            "lane": "UR",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 20000,
+            "lane": "DL",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 20000,
+            "lane": "DR",
+            "type": "TWIN"
+        },
+        {
+            "timeMs": 21000,
+            "lane": "UL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 21500,
+            "lane": "DR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 22000,
+            "lane": "UR",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 22500,
+            "lane": "DL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 23000,
+            "lane": "UL",
+            "type": "PULSE"
+        },
+        {
+            "timeMs": 23000,
+            "lane": "DR",
+            "type": "PULSE"
+        }
+    ]
+}

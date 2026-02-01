@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBITAL - 天体観測リズムゲーム</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+    <!-- メイン画面 -->
+    <div id="app">
+        <!-- タイトル画面 -->
+        <div id="title-screen" class="screen active">
+            <div class="title-content">
+                <h1 class="game-title">
+                    <span class="title-orbital">ORBITAL</span>
+                </h1>
+                <p class="subtitle">CELESTIAL RHYTHM EXPERIENCE</p>
+
+                <div class="title-buttons">
+                    <button id="btn-start" class="orbital-button primary">
+                        <span class="btn-text">START</span>
+                    </button>
+                    <button id="btn-library" class="orbital-button secondary">
+                        <span class="btn-text">MUSIC LIBRARY</span>
+                    </button>
+                    <button id="btn-settings" class="orbital-button secondary">
+                        <span class="btn-text">SETTINGS</span>
+                    </button>
+                </div>
+
+                <div class="key-hints">
+                    <div class="key-hint"><span class="key">A</span> 左上</div>
+                    <div class="key-hint"><span class="key">K</span> 右上</div>
+                    <div class="key-hint"><span class="key">Z</span> 左下</div>
+                    <div class="key-hint"><span class="key">M</span> 右下</div>
+                </div>
+
+                <div class="version">v0.1.0</div>
+            </div>
+        </div>
+
+        <!-- 楽曲選択画面 -->
+        <div id="select-screen" class="screen">
+            <div class="screen-header">
+                <button id="btn-back-title" class="back-button">
+                    <span class="arrow">←</span> BACK
+                </button>
+                <h2 class="screen-title">SELECT SONG</h2>
+            </div>
+
+            <div class="select-content">
+                <!-- タブ -->
+                <div class="select-tabs">
+                    <button class="select-tab active" data-tab="library">ライブラリ</button>
+                    <button class="select-tab" data-tab="file">ファイル選択</button>
+                    <button class="select-tab" data-tab="demo">デモ譜面</button>
+                </div>
+
+                <!-- ライブラリタブ -->
+                <div id="library-tab" class="tab-content active">
+                    <div id="song-library-list" class="song-library-list">
+                        <div class="library-empty">
+                            <div class="empty-icon">🌌</div>
+                            <p>ライブラリに楽曲がありません</p>
+                            <p class="empty-hint">「MUSIC LIBRARY」から楽曲を追加してください</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ファイル選択タブ -->
+                <div id="file-tab" class="tab-content">
+                    <div id="drop-zone" class="drop-zone">
+                        <div class="drop-zone-content">
+                            <div class="drop-icon">🎵</div>
+                            <p class="drop-text">楽曲ファイルをドロップ</p>
+                            <p class="drop-subtext">または</p>
+                            <label class="file-select-button">
+                                <span>ファイルを選択</span>
+                                <input type="file" id="file-input" accept="audio/*" hidden>
+                            </label>
+                            <p class="supported-formats">対応形式: MP3, WAV, OGG</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- デモ譜面タブ -->
+                <div id="demo-tab" class="tab-content">
+                    <div class="demo-charts">
+                        <div class="demo-chart-item" data-chart="tutorial">
+                            <div class="chart-icon">⭐</div>
+                            <div class="chart-info">
+                                <div class="chart-name">Tutorial</div>
+                                <div class="chart-desc">基本操作を学ぶ（PULSE + TWIN）</div>
+                            </div>
+                        </div>
+                        <div class="demo-chart-item" data-chart="showcase">
+                            <div class="chart-icon">🌟</div>
+                            <div class="chart-info">
+                                <div class="chart-name">Showcase</div>
+                                <div class="chart-desc">全ノーツ種類を体験（COMET + ARC）</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 選択された楽曲情報 -->
+                <div id="selected-song" class="selected-song hidden">
+                    <div class="song-info">
+                        <div class="song-artwork">
+                            <div class="artwork-placeholder">♪</div>
+                        </div>
+                        <div class="song-details">
+                            <h3 id="song-name" class="song-name">楽曲名</h3>
+                            <p id="song-duration" class="song-duration">--:--</p>
+                        </div>
+                    </div>
+
+                    <button id="btn-play" class="orbital-button primary large">
+                        <span class="btn-text">PLAY</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ライブラリ管理画面 -->
+        <div id="library-screen" class="screen">
+            <div class="screen-header">
+                <button id="btn-back-library" class="back-button">
+                    <span class="arrow">←</span> BACK
+                </button>
+                <h2 class="screen-title">MUSIC LIBRARY</h2>
+            </div>
+
+            <div class="library-content">
+                <div class="library-add-section">
+                    <h3 class="section-title">楽曲を追加</h3>
+                    <div id="library-drop-zone" class="drop-zone library-drop">
+                        <div class="drop-zone-content">
+                            <div class="drop-icon">➕</div>
+                            <p class="drop-text">楽曲ファイルをドロップして追加</p>
+                            <p class="drop-subtext">または</p>
+                            <label class="file-select-button">
+                                <span>ファイルを選択</span>
+                                <input type="file" id="library-file-input" accept="audio/*,.zip" multiple hidden>
+                            </label>
+                            <p class="supported-formats">対応形式: MP3, WAV, OGG, ZIP（複数選択可）</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="library-list-section">
+                    <h3 class="section-title">登録済み楽曲 <span id="library-count">(0曲)</span></h3>
+                    <div id="library-songs" class="library-songs">
+                        <div class="library-empty-msg">
+                            <p>まだ楽曲が追加されていません</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 追加中オーバーレイ -->
+            <div id="adding-overlay" class="overlay hidden">
+                <div class="loading-content">
+                    <div class="orbital-spinner"></div>
+                    <p class="loading-text">ADDING...</p>
+                    <p id="adding-status" class="loading-status">楽曲を追加中</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ゲームプレイ画面 -->
+        <div id="game-screen" class="screen">
+            <canvas id="game-canvas"></canvas>
+
+            <!-- 左側：ジャケット表示 -->
+            <div id="game-jacket-panel" class="game-side-panel left">
+                <div id="game-jacket" class="game-jacket-full">
+                    <span class="jacket-placeholder">♪</span>
+                </div>
+                <div id="game-jacket-artist" class="jacket-artist-overlay"></div>
+            </div>
+
+            <!-- 右側：楽曲情報 -->
+            <div id="game-info-panel" class="game-side-panel right">
+                <div id="game-title" class="game-title-side">Title</div>
+                <div id="game-artist" class="game-artist-side">Artist</div>
+                <div id="game-credit" class="game-credit-side"></div>
+            </div>
+
+            <!-- デバッグオーバーレイ -->
+            <div id="debug-overlay" class="debug-overlay hidden">
+                <div class="debug-info">
+                    <div>Time: <span id="debug-time">0.000</span>s</div>
+                    <div>FPS: <span id="debug-fps">60</span></div>
+                    <div>Notes: <span id="debug-notes">0</span></div>
+                </div>
+            </div>
+
+            <!-- ポーズメニュー -->
+            <div id="pause-menu" class="overlay hidden">
+                <div class="pause-content">
+                    <h2 class="pause-title">PAUSED</h2>
+                    <div class="pause-buttons">
+                        <button id="btn-resume" class="orbital-button primary">
+                            <span class="btn-text">RESUME</span>
+                        </button>
+                        <button id="btn-restart" class="orbital-button secondary">
+                            <span class="btn-text">RESTART</span>
+                        </button>
+                        <button id="btn-quit" class="orbital-button secondary">
+                            <span class="btn-text">QUIT</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- リザルト画面 -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h2 class="result-title">RESULT</h2>
+
+                <!-- メインスコア表示（大きく） -->
+                <div class="result-main">
+                    <div id="result-rank" class="result-rank-big">
+                        <span class="rank-letter-big">S</span>
+                    </div>
+                    <div class="result-score-big">
+                        <span id="result-score" class="score-number">0000000</span>
+                        <span class="score-label">SCORE</span>
+                    </div>
+                </div>
+
+                <!-- 詳細統計 -->
+                <div class="result-stats-compact">
+                    <div class="stat-item">
+                        <span class="stat-label">COMBO</span>
+                        <span id="result-combo" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">ACCURACY</span>
+                        <span id="result-accuracy" class="stat-value">0.00%</span>
+                    </div>
+                </div>
+
+                <div class="result-details">
+                    <div class="detail-item perfect">
+                        <span class="detail-label">PERFECT</span>
+                        <span id="result-perfect" class="detail-value">0</span>
+                    </div>
+                    <div class="detail-item good">
+                        <span class="detail-label">GOOD</span>
+                        <span id="result-good" class="detail-value">0</span>
+                    </div>
+                    <div class="detail-item miss">
+                        <span class="detail-label">MISS</span>
+                        <span id="result-miss" class="detail-value">0</span>
+                    </div>
+                </div>
+
+                <!-- ボタン -->
+                <div class="result-buttons">
+                    <button id="btn-retry" class="orbital-button primary large">
+                        <span class="btn-text">🔄 RETRY</span>
+                    </button>
+                    <button id="btn-back-select" class="orbital-button secondary">
+                        <span class="btn-text">📋 PLAYLIST</span>
+                    </button>
+                    <button id="btn-exit-title" class="orbital-button secondary">
+                        <span class="btn-text">🏠 EXIT</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 設定画面 -->
+        <div id="settings-screen" class="screen">
+            <div class="screen-header">
+                <button id="btn-back-settings" class="back-button">
+                    <span class="arrow">←</span> BACK
+                </button>
+                <h2 class="screen-title">SETTINGS</h2>
+            </div>
+
+            <div class="settings-content">
+                <div class="setting-group">
+                    <h3 class="setting-group-title">TIMING</h3>
+                    <div class="setting-item">
+                        <label>オフセット調整</label>
+                        <div class="slider-container">
+                            <input type="range" id="offset-slider" min="-200" max="200" value="0">
+                            <span id="offset-value" class="slider-value">0ms</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3 class="setting-group-title">SPEED</h3>
+                    <div class="setting-item">
+                        <label>ノーツ速度</label>
+                        <div class="slider-container">
+                            <input type="range" id="speed-slider" min="1" max="10" value="5" step="0.5">
+                            <span id="speed-value" class="slider-value">2.5x</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3 class="setting-group-title">DIFFICULTY</h3>
+                    <div class="setting-item">
+                        <label>難易度</label>
+                        <div class="difficulty-buttons">
+                            <button id="diff-easy" class="difficulty-btn" data-difficulty="easy">
+                                <span class="diff-name">EASY</span>
+                                <span class="diff-desc">左上・右上のみ</span>
+                            </button>
+                            <button id="diff-hard" class="difficulty-btn active" data-difficulty="hard">
+                                <span class="diff-name">HARD</span>
+                                <span class="diff-desc">全方向</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3 class="setting-group-title">AUDIO</h3>
+                    <div class="setting-item">
+                        <label>BGM音量</label>
+                        <div class="slider-container">
+                            <input type="range" id="bgm-slider" min="0" max="100" value="80">
+                            <span id="bgm-value" class="slider-value">80%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3 class="setting-group-title">KEYBINDS</h3>
+                    <div class="keybind-display">
+                        <div class="keybind-item">
+                            <span class="keybind-lane">左上 (UL)</span>
+                            <span class="keybind-key">A</span>
+                        </div>
+                        <div class="keybind-item">
+                            <span class="keybind-lane">右上 (UR)</span>
+                            <span class="keybind-key">K</span>
+                        </div>
+                        <div class="keybind-item">
+                            <span class="keybind-lane">左下 (DL)</span>
+                            <span class="keybind-key">Z</span>
+                        </div>
+                        <div class="keybind-item">
+                            <span class="keybind-lane">右下 (DR)</span>
+                            <span class="keybind-key">M</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3 class="setting-group-title">DEBUG</h3>
+                    <div class="setting-item">
+                        <label>デバッグ表示</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="debug-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="types.js"></script>
+    <script src="AudioManager.js"></script>
+    <script src="InputManager.js"></script>
+    <script src="SongLibrary.js"></script>
+    <script src="Renderer.js"></script>
+    <script src="JudgementManager.js"></script>
+    <script src="GameEngine.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
