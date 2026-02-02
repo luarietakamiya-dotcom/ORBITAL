@@ -126,6 +126,16 @@ class OrbitalApp {
                 tab.classList.add('active');
                 const tabId = tab.dataset.tab + '-tab';
                 document.getElementById(tabId).classList.add('active');
+
+                // タブ切り替え時に選択をリセット
+                this.selectedChart = null;
+                this.currentFile = null;
+                this.currentSongId = null;
+                document.getElementById('selected-song').classList.add('hidden');
+
+                // ライブラリとデモの選択状態もリセット
+                document.querySelectorAll('.library-item').forEach(i => i.classList.remove('selected'));
+                document.querySelectorAll('.demo-chart-item').forEach(i => i.classList.remove('selected'));
             });
         });
 
@@ -738,6 +748,42 @@ class OrbitalApp {
         } catch (e) {
             console.error('Failed to save settings:', e);
         }
+    }
+
+    _showResult(result) {
+        // ゲームを停止
+        this.gameEngine.stop();
+
+        // ランク計算
+        const rank = this._calculateRank(result.accuracy);
+
+        // 結果をUIに反映
+        document.getElementById('result-score').textContent = result.score.toLocaleString();
+        document.getElementById('result-combo').textContent = result.maxCombo;
+        document.getElementById('result-accuracy').textContent = `${result.accuracy.toFixed(2)}%`;
+        document.getElementById('result-perfect').textContent = result.perfect;
+        document.getElementById('result-good').textContent = result.good;
+        document.getElementById('result-miss').textContent = result.miss;
+
+        // ランク表示
+        const rankEl = document.getElementById('result-rank');
+        const rankLetter = rankEl.querySelector('.rank-letter-big');
+        rankLetter.textContent = rank;
+
+        // ランクに応じた色
+        rankEl.className = 'result-rank-big rank-' + rank.toLowerCase();
+
+        // リザルト画面を表示
+        this._showScreen('result');
+    }
+
+    _calculateRank(accuracy) {
+        if (accuracy >= 95) return 'S';
+        if (accuracy >= 90) return 'A';
+        if (accuracy >= 80) return 'B';
+        if (accuracy >= 70) return 'C';
+        if (accuracy >= 60) return 'D';
+        return 'E';
     }
 }
 

@@ -42,6 +42,18 @@ class GameEngine {
         // 入力コールバック
         this.inputManager.onKeyPress = (lane, time) => this._handleKeyPress(lane, time);
         this.inputManager.onKeyRelease = (lane, time) => this._handleKeyRelease(lane, time);
+
+        // 曲終了コールバック
+        this.audioManager.onEnded = () => {
+            if (this.isRunning && !this.isPaused) {
+                // 少し待ってからゲーム終了（最後のノーツの判定を待つ）
+                setTimeout(() => {
+                    if (this.isRunning) {
+                        this._endGame();
+                    }
+                }, 1500);
+            }
+        };
     }
 
     /**
